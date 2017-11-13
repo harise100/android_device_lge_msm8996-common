@@ -47,8 +47,10 @@ ro.bt.bdaddr_path=/data/misc/bluetooth/bdaddr
 ro.camera.notify_nfc=1
 vidc.debug.perf.mode=2
 vidc.enc.dcvs.extra-buff-count=2
-media.camera.ts.monotonic=0
+media.camera.ts.monotonic=1
 persist.audio.camcorder.stereo=true
+persist.camera.eis.enable=0
+#persist.camera.is_type=4
 
 # CNE and DPM
 persist.cne.feature=1
