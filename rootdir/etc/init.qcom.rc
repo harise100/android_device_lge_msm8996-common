@@ -82,14 +82,6 @@ on boot
     chmod 0644 /sys/devices/system/cpu/present
     chmod 0644 /sys/devices/system/cpu/online
 
-    # set default schedTune value for foreground/top-app (only affects EAS)
-    write /dev/stune/foreground/schedtune.prefer_idle 1
-    write /dev/stune/top-app/schedtune.boost 0
-    write /dev/stune/top-app/schedtune.prefer_idle 1
-
-    # Enable sched boost
-    write /proc/sys/kernel/sched_boost 1
-
     start rmt_storage
     start rfs_access
     # access permission for secure touch
@@ -935,10 +927,10 @@ service fpc_early_loader /system/bin/fpc_early_loader
 
 on configure-cpuset
     # Update foreground and background cpusets
-    write /dev/cpuset/foreground/cpus 0-2
-    write /dev/cpuset/foreground/boost/cpus 0-2
-    write /dev/cpuset/background/cpus 0
-    write /dev/cpuset/system-background/cpus 0-2
+    write /dev/cpuset/foreground/cpus 0-3
+    write /dev/cpuset/foreground/boost/cpus 0-3
+    write /dev/cpuset/background/cpus 0-3
+    write /dev/cpuset/system-background/cpus 0-3
     write /dev/cpuset/top-app/cpus 0-3
 
     # Add a cpuset for the camera daemon
@@ -951,8 +943,6 @@ on configure-cpuset
     chmod 0664 /dev/cpuset/camera-daemon/tasks
 
 on property:sys.boot_completed=1
-    # Disable boosting
-    write /proc/sys/kernel/sched_boost 0
     trigger configure-cpuset
     # Set BFQ I/O scheduler
     setprop sys.io.scheduler "bfq"
